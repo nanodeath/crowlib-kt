@@ -1,22 +1,18 @@
 package com.github.nanodeath
 
-class AlgorithmOpts<T : Node>(
-    val distanceCalculator: DistanceCalculator<T>
-)
-
 private data class NodeWithScore<T>(val originalNode: T, val score: Float) : Comparable<NodeWithScore<T>> {
     override fun compareTo(other: NodeWithScore<T>): Int = score.compareTo(other.score)
 }
 
 class AStarAlgorithm<T : Node>(private val graph: Graph<T>) {
-    private inline fun Map<T, Float>.g(node: T) = getOrDefault(node, Float.POSITIVE_INFINITY)
+    private inline fun Map<T, Float>.g(node: T) = this.getOrElse(node) { Float.POSITIVE_INFINITY }
     private inline fun Map<T, Float>.g(node: NodeWithScore<T>) = g(node.originalNode)
 
     fun findPath(start: T, end: T, opts: AlgorithmOpts<T>): Path<T>? {
         val distanceCalculator = opts.distanceCalculator
         fun h(node: T) = distanceCalculator.approximateDistance(node, end)
 
-        val openSet = constructQueue<NodeWithScore<T>>().also { it.enqueue(NodeWithScore(start, 0F)) }
+        val openSet = constructPriorityQueue<NodeWithScore<T>>().also { it.enqueue(NodeWithScore(start, 0F)) }
         val closedSet = hashSetOf<T>()
         val gMap = hashMapOf<T, Float>().apply {
             this[start] = 0F
@@ -39,8 +35,7 @@ class AStarAlgorithm<T : Node>(private val graph: Graph<T>) {
 
             if (!closedSet.add(next.originalNode)) continue
 
-            val neighbors = graph.neighborsOf(next.originalNode)
-            for (neighbor in neighbors) {
+            for (neighbor in graph.neighborsOf(next.originalNode)) {
                 if (neighbor in closedSet) continue
                 val tentativeG = gMap.g(next) + distanceCalculator.exactDistance(next.originalNode, neighbor)
                 if (tentativeG < gMap.g(neighbor)) {
@@ -58,7 +53,7 @@ class AStarAlgorithm<T : Node>(private val graph: Graph<T>) {
         return null
     }
 
-    private fun reconstructPath(finalNode: T, ancestorMap: HashMap<T, T>, distance: Float, length: Int): Path<T> {
+    private fun reconstructPath(finalNode: T, ancestorMap: Map<T, T>, distance: Float, length: Int): Path<T> {
         val nodes = ArrayList<T>(length)
         var node: T? = finalNode
         repeat(length) {

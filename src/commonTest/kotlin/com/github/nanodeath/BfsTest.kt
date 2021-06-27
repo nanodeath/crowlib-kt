@@ -1,11 +1,13 @@
-import com.github.nanodeath.*
-import kotlin.test.*
+package com.github.nanodeath
 
-class AStarTest  {
+import kotlin.test.Test
+import kotlin.test.assertEquals
+
+class BfsTest  {
     @Test
-    fun `straight shot`() {
+    fun straightShot() {
         val grid = Grid(3, 2)
-        val algorithm = AStarAlgorithm(grid)
+        val algorithm = BFSAlgorithm(grid)
         val path = algorithm.findPath(grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(SimpleNode.distanceCalculator()))
         assertEquals(Path(listOf(
             grid.requireAt(0, 1),
@@ -15,10 +17,10 @@ class AStarTest  {
     }
 
     @Test
-    fun `around obstacle`() {
+    fun aroundObstacle() {
         val grid = Grid(3, 2)
         grid.setAt(1, 1, null)
-        val algorithm = AStarAlgorithm(grid)
+        val algorithm = BFSAlgorithm(grid)
         val path = algorithm.findPath(grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(SimpleNode.distanceCalculator()))
         assertEquals(Path(listOf(
             grid.requireAt(0, 1),
