@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="crowlib-kt-js-1.0-SNAPSHOT">
+    <output-path>D:\Projects\crowlib-kt\build\libs</output-path>
+    <root id="archive" name="crowlib-kt-js-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="crowlib-kt.jsMain" />
+    </root>
+  </artifact>
+</component>
