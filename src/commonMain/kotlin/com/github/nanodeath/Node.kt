@@ -32,6 +32,8 @@ data class CostNode(val x: Int, val y: Int, val costToEnter: Float) : Node {
     }
 
     override fun hashCode(): Int = 31 * x + y
+    override fun toString() = "CostNode([$x,$y], cost:$costToEnter)"
+
 
     companion object {
         fun distanceCalculator() = object : DistanceCalculator<CostNode> {

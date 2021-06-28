@@ -32,7 +32,7 @@ internal data class FloatTuple(val v1: Float, val v2: Float): Comparable<FloatTu
 
 class LPAStarAlgorithm<T : Node>(
     private val graph: Graph<T>,
-    private val start: T,
+    private var start: T,
     private val goal: T,
     private val opts: AlgorithmOpts<T>
 ) {
@@ -106,6 +106,14 @@ class LPAStarAlgorithm<T : Node>(
                 queue.enqueue(NodeWithFloats(node, calculateKey(node)))
             }
         }
+    }
+
+    // It's unclear whether this is correct or even possible -- it's not in the wiki.
+    // But it does pass tests.
+    fun updateStart(node: T) {
+        val oldStart = start
+        start = node
+        updateNode(oldStart)
     }
 
     private val T.successors: Collection<T> get() {

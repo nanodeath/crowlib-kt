@@ -57,4 +57,28 @@ class LPAStarAlgorithmTest {
             grid.requireAt(2, 1),
         ), 4F), newPath)
     }
+
+    @Test
+    fun updatedStart() {
+        val grid = CostGrid(3, 3)
+        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 0), grid.requireAt(2, 2), AlgorithmOpts(CostNode.distanceCalculator()))
+        algorithm.computeShortestPath()
+        val path = algorithm.findPath()
+        assertEquals(Path(listOf(
+            grid.requireAt(0, 0),
+            grid.requireAt(0, 1),
+            grid.requireAt(0, 2),
+            grid.requireAt(1, 2),
+            grid.requireAt(2, 2),
+        ), 4F), path)
+
+        algorithm.updateStart(grid.requireAt(2, 0))
+        algorithm.computeShortestPath()
+        val newPath = algorithm.findPath()
+        assertEquals(Path(listOf(
+            grid.requireAt(2, 0),
+            grid.requireAt(2, 1),
+            grid.requireAt(2, 2),
+        ), 2F), newPath)
+    }
 }
