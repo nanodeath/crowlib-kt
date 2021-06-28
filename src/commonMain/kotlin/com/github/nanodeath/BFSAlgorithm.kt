@@ -15,7 +15,7 @@ class BFSAlgorithm<T : Node>(private val graph: Graph<T>) {
                 return reconstructPath(next, ancestorMap, lengthMap[next]!!, opts)
             }
             val nextLength = lengthMap[next]!!
-            for (neighbor in graph.neighborsOf(next)) {
+            for (neighbor in graph.successorsOf(next)) {
                 if (!ancestorMap.containsKey(neighbor)) {
                     openSet.enqueue(neighbor)
                     ancestorMap[neighbor] = next

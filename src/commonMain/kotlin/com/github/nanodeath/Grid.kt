@@ -17,17 +17,21 @@ class Grid(val width: Int, val height: Int) : Graph<SimpleNode> {
         data[y][x] = node
     }
 
-    override fun neighborsOf(node: SimpleNode): Collection<SimpleNode> =
-        listOfNotNull(
-            // left
-            data.getOrNull(node.y)?.getOrNull(node.x - 1),
-            // right
-            data.getOrNull(node.y)?.getOrNull(node.x + 1),
-            // up
-            data.getOrNull(node.y - 1)?.getOrNull(node.x),
-            // down
-            data.getOrNull(node.y + 1)?.getOrNull(node.x),
-        )
+    override fun successorsOf(node: SimpleNode): Collection<SimpleNode> = listOfNotNull(
+        // left
+        data.getOrNull(node.y)?.getOrNull(node.x - 1),
+        // right
+        data.getOrNull(node.y)?.getOrNull(node.x + 1),
+        // up
+        data.getOrNull(node.y - 1)?.getOrNull(node.x),
+        // down
+        data.getOrNull(node.y + 1)?.getOrNull(node.x),
+    )
+
+    override fun predecessorsOf(node: SimpleNode): Collection<SimpleNode> {
+        // In Grid every node connection is bidirectional
+        return successorsOf(node)
+    }
 }
 
 class CostGrid(val width: Int, val height: Int) : Graph<CostNode> {
@@ -47,15 +51,19 @@ class CostGrid(val width: Int, val height: Int) : Graph<CostNode> {
         data[y][x] = node
     }
 
-    override fun neighborsOf(node: CostNode): Collection<CostNode> =
-        listOfNotNull(
-            // left
-            data.getOrNull(node.y)?.getOrNull(node.x - 1),
-            // right
-            data.getOrNull(node.y)?.getOrNull(node.x + 1),
-            // up
-            data.getOrNull(node.y - 1)?.getOrNull(node.x),
-            // down
-            data.getOrNull(node.y + 1)?.getOrNull(node.x),
-        )
+    override fun successorsOf(node: CostNode): Collection<CostNode> = listOfNotNull(
+        // left
+        data.getOrNull(node.y)?.getOrNull(node.x - 1),
+        // right
+        data.getOrNull(node.y)?.getOrNull(node.x + 1),
+        // up
+        data.getOrNull(node.y - 1)?.getOrNull(node.x),
+        // down
+        data.getOrNull(node.y + 1)?.getOrNull(node.x),
+    )
+
+    override fun predecessorsOf(node: CostNode): Collection<CostNode> {
+        // In CostGrid every node connection is bidirectional
+        return successorsOf(node)
+    }
 }

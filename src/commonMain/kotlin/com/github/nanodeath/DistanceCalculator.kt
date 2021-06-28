@@ -1,6 +1,6 @@
 package com.github.nanodeath
 
-public interface DistanceCalculator<T : Node> {
-    public fun approximateDistance(start: T, end: T): Float
-    public fun exactDistance(node: T, neighbor: T): Float
+interface DistanceCalculator<T : Node> {
+    fun approximateDistance(start: T, end: T): Float
+    fun exactDistance(node: T, neighbor: T): Float
 }

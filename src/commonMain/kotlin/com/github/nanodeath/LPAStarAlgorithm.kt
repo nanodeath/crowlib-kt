@@ -85,7 +85,7 @@ class LPAStarAlgorithm<T : Node>(
         var node: T = goal
         var distance = 0F
         while (node != start) {
-            val predecessor = graph.neighborsOf(node).minByOrNull { it.g + opts.distanceCalculator.exactDistance(it, node) }
+            val predecessor = node.predecessors.minByOrNull { it.g + opts.distanceCalculator.exactDistance(it, node) }
             distance += opts.distanceCalculator.exactDistance(predecessor!!, node)
             nodes.add(predecessor)
             node = predecessor
@@ -116,16 +116,7 @@ class LPAStarAlgorithm<T : Node>(
         updateNode(oldStart)
     }
 
-    private val T.successors: Collection<T> get() {
-        // In theory, this should only be nodes connected by an "outbound" edge of a node. But isn't that all neighbors?
-        // I suppose you could get into a trap that you can't get out of, which means an edge is one-directional.
-        // But even that can be captured in the Graph itself -- even if Node_B is a neighbor of Node_A, doesn't mandate
-        // that Node_A is a neighbor of Node_B -- graphs aren't necessarily commutative in their edges.
-        return graph.neighborsOf(this)
-    }
+    private val T.successors: Collection<T> get() = graph.successorsOf(this)
 
-    private val T.predecessors: Collection<T> get() {
-        // Uh, this should really not be the same as successors, but it's fine for now FIXME
-        return graph.neighborsOf(this)
-    }
+    private val T.predecessors: Collection<T> get() = graph.predecessorsOf(this)
 }

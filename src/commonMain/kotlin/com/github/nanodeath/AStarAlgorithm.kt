@@ -35,7 +35,7 @@ class AStarAlgorithm<T : Node>(private val graph: Graph<T>) {
 
             if (!closedSet.add(next.originalNode)) continue
 
-            for (neighbor in graph.neighborsOf(next.originalNode)) {
+            for (neighbor in graph.successorsOf(next.originalNode)) {
                 if (neighbor in closedSet) continue
                 val tentativeG = gMap.g(next) + distanceCalculator.exactDistance(next.originalNode, neighbor)
                 if (tentativeG < gMap.g(neighbor)) {
