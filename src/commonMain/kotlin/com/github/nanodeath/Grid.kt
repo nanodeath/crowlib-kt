@@ -39,9 +39,9 @@ class Grid(width: Int, height: Int) : Graph<Grid.SimpleNode> {
     }
 
     override fun approximateDistance(start: SimpleNode, end: SimpleNode): Float {
-        val x = abs(end.x - start.x).toFloat()
-        val y = abs(end.y - start.y).toFloat()
-        return sqrt(x * x + y * y)
+        val x = end.x - start.x
+        val y = end.y - start.y
+        return sqrt(x * x * 1.0F + y * y)
     }
 
     override fun exactDistance(node: SimpleNode, neighbor: SimpleNode): Float = 1F

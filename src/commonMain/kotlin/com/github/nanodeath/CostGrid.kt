@@ -42,9 +42,9 @@ class CostGrid(val width: Int, val height: Int) : Graph<CostGrid.CostNode> {
     }
 
     override fun approximateDistance(start: CostNode, end: CostNode): Float {
-        val x = abs(end.x - start.x).toFloat()
-        val y = abs(end.y - start.y).toFloat()
-        return sqrt(x * x + y * y)
+        val x = end.x - start.x
+        val y = end.y - start.y
+        return sqrt(x * x * 1.0F + y * y)
     }
     override fun exactDistance(node: CostNode, neighbor: CostNode): Float = neighbor.costToEnter
 
