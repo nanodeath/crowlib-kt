@@ -28,8 +28,34 @@ class Grid(val width: Int, val height: Int) : Graph<SimpleNode> {
             // down
             data.getOrNull(node.y + 1)?.getOrNull(node.x),
         )
+}
 
-    companion object {
+class CostGrid(val width: Int, val height: Int) : Graph<CostNode> {
+    private val data: Array<Array<CostNode?>> = Array(height) { y -> Array(width) { x -> CostNode(x, y, 1F) } }
 
+    fun getAt(x: Int, y: Int): CostNode? {
+        val row = data.getOrNull(y)
+        if (row != null && x in row.indices) {
+            return row[x]
+        }
+        throw IndexOutOfBoundsException()
     }
+
+    fun requireAt(x: Int, y: Int): CostNode = getAt(x, y)!!
+
+    fun setAt(x: Int, y: Int, node: CostNode?) {
+        data[y][x] = node
+    }
+
+    override fun neighborsOf(node: CostNode): Collection<CostNode> =
+        listOfNotNull(
+            // left
+            data.getOrNull(node.y)?.getOrNull(node.x - 1),
+            // right
+            data.getOrNull(node.y)?.getOrNull(node.x + 1),
+            // up
+            data.getOrNull(node.y - 1)?.getOrNull(node.x),
+            // down
+            data.getOrNull(node.y + 1)?.getOrNull(node.x),
+        )
 }

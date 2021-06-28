@@ -1,6 +1,6 @@
 package com.github.nanodeath
 
-private data class NodeWithScore<T>(val originalNode: T, val score: Float) : Comparable<NodeWithScore<T>> {
+internal data class NodeWithScore<T>(val originalNode: T, val score: Float) : Comparable<NodeWithScore<T>> {
     override fun compareTo(other: NodeWithScore<T>): Int = score.compareTo(other.score)
 }
 

@@ -1,35 +1,51 @@
 package com.github.nanodeath
 
+// based on minheap in https://www.educative.io/blog/data-structure-heaps-guide
 class JsPriorityQueue<T : Comparable<T>> : PriorityQueue<T> {
-    private val heap = js("[]")
+    private val heap = JsArray<T>()
     private var elements = 0
 
-    override fun isEmpty(): Boolean {
-        return elements == 0
-    }
+    override fun isEmpty(): Boolean = elements == 0
+
+    override fun peek(): T? = if (elements > 0) heap[0] else null
 
     override fun dequeue(): T {
         check(elements >= 0)
         return when (elements) {
             0 -> throw NoSuchElementException()
-            1 -> {
-                heap[--elements] as T
-            }
+            1 -> heap[--elements]
             else -> {
                 val min = heap[0]
-                heap[0] = this.heap[elements - 1]
+                heap[0] = heap[elements - 1]
                 elements--
                 minHeapify(0)
-                min as T
+                min
             }
         }
     }
 
+    override fun removeIfPresent(element: T): Boolean {
+        var idxToRemove = -1
+        for (i in 0 until elements) {
+            if (heap[i] == element) {
+                idxToRemove = i
+                break
+            }
+        }
+        if (idxToRemove >= 0) {
+            heap[idxToRemove] = heap[elements - 1]
+            elements--
+            minHeapify(idxToRemove)
+            return true
+        }
+        return false
+    }
+
     override fun enqueue(element: T) {
-        if (elements >= heap.length as Int) {
+        if (elements >= heap.length) {
             elements++
             heap.push(element)
-            percolateUp((heap.length - 1) as Int)
+            percolateUp(heap.length - 1)
         } else {
             heap[elements] = element
             elements++
@@ -52,10 +68,12 @@ class JsPriorityQueue<T : Comparable<T>> : PriorityQueue<T> {
         val left = index * 2 + 1
         val right = index * 2 + 2
         var smallest = index
-        if (elements > left && compareByIndex(smallest, left) > 0) { //heap[smallest] > heap[left]) {
+        // left child is smaller than current node
+        if (elements > left && compareByIndex(smallest, left) > 0) {
             smallest = left
         }
-        if (elements > right && compareByIndex(smallest, right) > 0) {//heap[smallest] > heap[right]) {
+        // right child is smaller than current node or left child
+        if (elements > right && compareByIndex(smallest, right) > 0) {
             smallest = right
         }
         if (smallest != index) {
@@ -66,11 +84,7 @@ class JsPriorityQueue<T : Comparable<T>> : PriorityQueue<T> {
         }
     }
 
-    private inline fun compareByIndex(idx1: Int, idx2: Int): Int {
-        return (heap[idx1] as Comparable<T>).compareTo(heap[idx2])
-    }
+    private inline fun compareByIndex(idx1: Int, idx2: Int): Int = heap[idx1].compareTo(heap[idx2])
 }
 
 actual fun <T : Comparable<T>> constructPriorityQueue(): PriorityQueue<T> = JsPriorityQueue()
-
-actual fun <T> Comparable<T>.asComparable(): Comparable<T> = this

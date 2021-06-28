@@ -9,4 +9,3 @@ inline fun <T> Queue<T>.isNotEmpty() = !isEmpty()
 
 expect fun <T> constructQueue(): Queue<T>
 
-expect fun <T> Comparable<T>.asComparable(): Comparable<T>
