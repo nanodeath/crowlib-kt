@@ -4,13 +4,12 @@ internal data class NodeWithScore<T>(val originalNode: T, val score: Float) : Co
     override fun compareTo(other: NodeWithScore<T>): Int = score.compareTo(other.score)
 }
 
-class AStarAlgorithm<T : Node>(private val graph: Graph<T>) {
+class AStarAlgorithm<T>(private val graph: Graph<T>) {
     private inline fun Map<T, Float>.g(node: T) = this.getOrElse(node) { Float.POSITIVE_INFINITY }
     private inline fun Map<T, Float>.g(node: NodeWithScore<T>) = g(node.originalNode)
 
-    fun findPath(start: T, end: T, opts: AlgorithmOpts<T>): Path<T>? {
-        val distanceCalculator = opts.distanceCalculator
-        fun h(node: T) = distanceCalculator.approximateDistance(node, end)
+    fun findPath(start: T, end: T): Path<T>? {
+        fun h(node: T) = graph.approximateDistance(node, end)
 
         val openSet = constructPriorityQueue<NodeWithScore<T>>().also { it.enqueue(NodeWithScore(start, 0F)) }
         val closedSet = hashSetOf<T>()
@@ -37,7 +36,7 @@ class AStarAlgorithm<T : Node>(private val graph: Graph<T>) {
 
             for (neighbor in graph.successorsOf(next.originalNode)) {
                 if (neighbor in closedSet) continue
-                val tentativeG = gMap.g(next) + distanceCalculator.exactDistance(next.originalNode, neighbor)
+                val tentativeG = gMap.g(next) + graph.exactDistance(next.originalNode, neighbor)
                 if (tentativeG < gMap.g(neighbor)) {
                     ancestorMap[neighbor] = next.originalNode
                     gMap[neighbor] = tentativeG

@@ -30,11 +30,10 @@ internal data class FloatTuple(val v1: Float, val v2: Float): Comparable<FloatTu
     }
 }
 
-class LPAStarAlgorithm<T : Node>(
+class LPAStarAlgorithm<T>(
     private val graph: Graph<T>,
     private var start: T,
-    private val goal: T,
-    private val opts: AlgorithmOpts<T>
+    private val goal: T
 ) {
     private val queue = constructPriorityQueue<NodeWithFloats<T>>()
     private val gMap = hashMapOf<T, Float>()
@@ -56,7 +55,7 @@ class LPAStarAlgorithm<T : Node>(
     }
 
     private fun calculateKey(node: T): FloatTuple =
-        FloatTuple(min(node.g, node.rhs) + opts.distanceCalculator.approximateDistance(node, goal), min(node.g, node.rhs))
+        FloatTuple(min(node.g, node.rhs) + graph.approximateDistance(node, goal), min(node.g, node.rhs))
 
     fun computeShortestPath() {
         while (true) {
@@ -85,8 +84,8 @@ class LPAStarAlgorithm<T : Node>(
         var node: T = goal
         var distance = 0F
         while (node != start) {
-            val predecessor = node.predecessors.minByOrNull { it.g + opts.distanceCalculator.exactDistance(it, node) }
-            distance += opts.distanceCalculator.exactDistance(predecessor!!, node)
+            val predecessor = node.predecessors.minByOrNull { it.g + graph.exactDistance(it, node) }
+            distance += graph.exactDistance(predecessor!!, node)
             nodes.add(predecessor)
             node = predecessor
         }
@@ -99,7 +98,7 @@ class LPAStarAlgorithm<T : Node>(
         if (node != start) {
             node.rhs = Float.POSITIVE_INFINITY
             for (predecessor in node.predecessors) {
-                node.rhs = min(node.rhs, predecessor.g + opts.distanceCalculator.exactDistance(predecessor, node))
+                node.rhs = min(node.rhs, predecessor.g + graph.exactDistance(predecessor, node))
             }
             queue.removeIfPresent(NodeWithFloats(node))
             if (node.g != node.rhs) {

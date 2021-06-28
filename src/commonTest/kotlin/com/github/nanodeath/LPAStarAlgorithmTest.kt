@@ -7,7 +7,7 @@ class LPAStarAlgorithmTest {
     @Test
     fun straightShot() {
         val grid = Grid(3, 2)
-        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(SimpleNode.distanceCalculator()))
+        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 1), grid.requireAt(2, 1))
         algorithm.computeShortestPath()
         val path = algorithm.findPath()
         assertEquals(Path(listOf(
@@ -21,7 +21,7 @@ class LPAStarAlgorithmTest {
     fun aroundObstacle() {
         val grid = Grid(3, 2)
         grid.setAt(1, 1, null)
-        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(SimpleNode.distanceCalculator()))
+        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 1), grid.requireAt(2, 1))
         algorithm.computeShortestPath()
         val path = algorithm.findPath()
         assertEquals(Path(listOf(
@@ -36,7 +36,7 @@ class LPAStarAlgorithmTest {
     @Test
     fun updatedObstacle() {
         val grid = CostGrid(3, 2)
-        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(CostNode.distanceCalculator()))
+        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 1), grid.requireAt(2, 1))
         algorithm.computeShortestPath()
         val path = algorithm.findPath()
         assertEquals(Path(listOf(
@@ -44,7 +44,7 @@ class LPAStarAlgorithmTest {
             grid.requireAt(1, 1),
             grid.requireAt(2, 1),
         ), 2F), path)
-        grid.setAt(1, 1, CostNode(1, 1, 10F))
+        grid.setCost(1, 1, 10F)
         algorithm.updateNode(grid.requireAt(1, 1))
         algorithm.computeShortestPath()
 
@@ -61,7 +61,7 @@ class LPAStarAlgorithmTest {
     @Test
     fun updatedStart() {
         val grid = CostGrid(3, 3)
-        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 0), grid.requireAt(2, 2), AlgorithmOpts(CostNode.distanceCalculator()))
+        val algorithm = LPAStarAlgorithm(grid, grid.requireAt(0, 0), grid.requireAt(2, 2))
         algorithm.computeShortestPath()
         val path = algorithm.findPath()
         assertEquals(Path(listOf(

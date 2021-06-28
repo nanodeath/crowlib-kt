@@ -8,7 +8,7 @@ class BfsTest  {
     fun straightShot() {
         val grid = Grid(3, 2)
         val algorithm = BFSAlgorithm(grid)
-        val path = algorithm.findPath(grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(SimpleNode.distanceCalculator()))
+        val path = algorithm.findPath(grid.requireAt(0, 1), grid.requireAt(2, 1))
         assertEquals(Path(listOf(
             grid.requireAt(0, 1),
             grid.requireAt(1, 1),
@@ -21,7 +21,7 @@ class BfsTest  {
         val grid = Grid(3, 2)
         grid.setAt(1, 1, null)
         val algorithm = BFSAlgorithm(grid)
-        val path = algorithm.findPath(grid.requireAt(0, 1), grid.requireAt(2, 1), AlgorithmOpts(SimpleNode.distanceCalculator()))
+        val path = algorithm.findPath(grid.requireAt(0, 1), grid.requireAt(2, 1))
         assertEquals(Path(listOf(
             grid.requireAt(0, 1),
             grid.requireAt(0, 0),

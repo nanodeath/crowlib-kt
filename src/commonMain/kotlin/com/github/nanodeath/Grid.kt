@@ -1,6 +1,9 @@
 package com.github.nanodeath
 
-class Grid(val width: Int, val height: Int) : Graph<SimpleNode> {
+import kotlin.math.abs
+import kotlin.math.sqrt
+
+class Grid(width: Int, height: Int) : Graph<Grid.SimpleNode> {
     private val data: Array<Array<SimpleNode?>> = Array(height) { y -> Array(width) { x -> SimpleNode(x, y) } }
 
     fun getAt(x: Int, y: Int): SimpleNode? {
@@ -17,6 +20,8 @@ class Grid(val width: Int, val height: Int) : Graph<SimpleNode> {
         data[y][x] = node
     }
 
+    class SimpleNode(internal val x: Int, internal val y: Int)
+
     override fun successorsOf(node: SimpleNode): Collection<SimpleNode> = listOfNotNull(
         // left
         data.getOrNull(node.y)?.getOrNull(node.x - 1),
@@ -32,38 +37,12 @@ class Grid(val width: Int, val height: Int) : Graph<SimpleNode> {
         // In Grid every node connection is bidirectional
         return successorsOf(node)
     }
-}
 
-class CostGrid(val width: Int, val height: Int) : Graph<CostNode> {
-    private val data: Array<Array<CostNode?>> = Array(height) { y -> Array(width) { x -> CostNode(x, y, 1F) } }
-
-    fun getAt(x: Int, y: Int): CostNode? {
-        val row = data.getOrNull(y)
-        if (row != null && x in row.indices) {
-            return row[x]
-        }
-        throw IndexOutOfBoundsException()
+    override fun approximateDistance(start: SimpleNode, end: SimpleNode): Float {
+        val x = abs(end.x - start.x).toFloat()
+        val y = abs(end.y - start.y).toFloat()
+        return sqrt(x * x + y * y)
     }
 
-    fun requireAt(x: Int, y: Int): CostNode = getAt(x, y)!!
-
-    fun setAt(x: Int, y: Int, node: CostNode?) {
-        data[y][x] = node
-    }
-
-    override fun successorsOf(node: CostNode): Collection<CostNode> = listOfNotNull(
-        // left
-        data.getOrNull(node.y)?.getOrNull(node.x - 1),
-        // right
-        data.getOrNull(node.y)?.getOrNull(node.x + 1),
-        // up
-        data.getOrNull(node.y - 1)?.getOrNull(node.x),
-        // down
-        data.getOrNull(node.y + 1)?.getOrNull(node.x),
-    )
-
-    override fun predecessorsOf(node: CostNode): Collection<CostNode> {
-        // In CostGrid every node connection is bidirectional
-        return successorsOf(node)
-    }
+    override fun exactDistance(node: SimpleNode, neighbor: SimpleNode): Float = 1F
 }

@@ -1,7 +1,7 @@
 package com.github.nanodeath
 
-class BFSAlgorithm<T : Node>(private val graph: Graph<T>) {
-    fun findPath(start: T, end: T, opts: AlgorithmOpts<T>): Path<T>? {
+class BFSAlgorithm<T>(private val graph: Graph<T>) {
+    fun findPath(start: T, end: T): Path<T>? {
         val openSet = constructQueue<T>().also { it.enqueue(start) }
         val ancestorMap = hashMapOf<T, T?>().also { it[start] = null }
         val lengthMap = hashMapOf<T, Int>().apply {
@@ -12,7 +12,7 @@ class BFSAlgorithm<T : Node>(private val graph: Graph<T>) {
             val next = openSet.dequeue()
             if (!visited.add(next)) continue
             if (next == end) {
-                return reconstructPath(next, ancestorMap, lengthMap[next]!!, opts)
+                return reconstructPath(next, ancestorMap, lengthMap[next]!!)
             }
             val nextLength = lengthMap[next]!!
             for (neighbor in graph.successorsOf(next)) {
@@ -26,7 +26,7 @@ class BFSAlgorithm<T : Node>(private val graph: Graph<T>) {
         return null
     }
 
-    private fun reconstructPath(finalNode: T, ancestorMap: Map<T, T?>, length: Int, opts: AlgorithmOpts<T>): Path<T> {
+    private fun reconstructPath(finalNode: T, ancestorMap: Map<T, T?>, length: Int): Path<T> {
         val nodes = ArrayList<T>(length)
         var node: T? = finalNode
         var distance = 0F
@@ -35,7 +35,7 @@ class BFSAlgorithm<T : Node>(private val graph: Graph<T>) {
             val ancestor = ancestorMap[node]
             if (ancestor != null) {
                 // ancestor should only be null for our start node
-                distance += opts.distanceCalculator.exactDistance(ancestor, node)
+                distance += graph.exactDistance(ancestor, node)
             }
             node = ancestor
         }
