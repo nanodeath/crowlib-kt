@@ -38,6 +38,8 @@ class LPAStarAlgorithm<T>(
     private val queue = constructPriorityQueue<NodeWithFloats<T>>()
     private val gMap = hashMapOf<T, Float>()
     private val rhsMap = hashMapOf<T, Float>()
+
+    //region Helper extensions
     private inline var T.g: Float
         get() = gMap[this] ?: Float.POSITIVE_INFINITY
         set(value) {
@@ -48,6 +50,10 @@ class LPAStarAlgorithm<T>(
         set(value) {
             rhsMap[this] = value
         }
+
+    private val T.successors: Collection<T> get() = graph.successorsOf(this)
+    private val T.predecessors: Collection<T> get() = graph.predecessorsOf(this)
+    //endregion
 
     init {
         start.rhs = 0F
@@ -96,10 +102,9 @@ class LPAStarAlgorithm<T>(
     // Call whenever the cost of the edge(s) pointing into [node] are updated.
     fun updateNode(node: T) {
         if (node != start) {
-            node.rhs = Float.POSITIVE_INFINITY
-            for (predecessor in node.predecessors) {
-                node.rhs = min(node.rhs, predecessor.g + graph.exactDistance(predecessor, node))
-            }
+            node.rhs = node.predecessors.minOfOrNull { predecessor ->
+                predecessor.g + graph.exactDistance(predecessor, node)
+            } ?: Float.POSITIVE_INFINITY
             queue.removeIfPresent(NodeWithFloats(node))
             if (node.g != node.rhs) {
                 queue.enqueue(NodeWithFloats(node, calculateKey(node)))
@@ -114,8 +119,4 @@ class LPAStarAlgorithm<T>(
         start = node
         updateNode(oldStart)
     }
-
-    private val T.successors: Collection<T> get() = graph.successorsOf(this)
-
-    private val T.predecessors: Collection<T> get() = graph.predecessorsOf(this)
 }
