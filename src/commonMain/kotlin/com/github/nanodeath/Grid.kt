@@ -1,7 +1,6 @@
 package com.github.nanodeath
 
 import kotlin.js.JsExport
-import kotlin.math.abs
 import kotlin.math.sqrt
 
 @JsExport
@@ -24,7 +23,7 @@ class Grid(width: Int, height: Int) : Graph<Grid.SimpleNode> {
 
     data class SimpleNode(internal val x: Int, internal val y: Int)
 
-    override fun successorsOf(node: SimpleNode): Collection<SimpleNode> = listOfNotNull(
+    override fun successorsOf(node: SimpleNode): List<SimpleNode> = listOfNotNull(
         // left
         data.getOrNull(node.y)?.getOrNull(node.x - 1),
         // right
@@ -35,7 +34,7 @@ class Grid(width: Int, height: Int) : Graph<Grid.SimpleNode> {
         data.getOrNull(node.y + 1)?.getOrNull(node.x),
     )
 
-    override fun predecessorsOf(node: SimpleNode): Collection<SimpleNode> {
+    override fun predecessorsOf(node: SimpleNode): List<SimpleNode> {
         // In Grid every node connection is bidirectional
         return successorsOf(node)
     }

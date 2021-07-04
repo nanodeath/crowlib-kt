@@ -17,17 +17,15 @@ class FRAStarAlgorithm<T>(private val graph: Graph<T>) {
         fun T.h() = graph.approximateDistance(this, end)
         fun T.f() = g() + h()
 
-//        val fringe = mutableListOf<T>().also { it.add(start) }
-        var currentIteration /* now */ = linkedSetOf<T>().also { it.add(start) }
-        var nextIteration = linkedSetOf<T>()
+        var currentIteration = linkedSetOf<T>().also { it.add(start) } // "now"
+        var nextIteration = linkedSetOf<T>() // "later"
         val cache = mutableMapOf<T, CacheKey>()
         cache[start] = CacheKey(0F, null)
-        // cache[the rest] = null
         var fLimit = start.h()
         var found = false
 
         while(!found && (currentIteration.isNotEmpty() || nextIteration.isNotEmpty())) {
-            if (currentIteration.isEmpty() && nextIteration.isNotEmpty()) { // move to end
+            if (currentIteration.isEmpty() && nextIteration.isNotEmpty()) {
                 currentIteration = nextIteration
                 nextIteration = linkedSetOf()
             }
@@ -45,7 +43,7 @@ class FRAStarAlgorithm<T>(private val graph: Graph<T>) {
                     found = true
                     break
                 }
-                for (s in graph.successorsOf(n) /* TODO: reversed? */) {
+                for (s in graph.successorsOf(n).asReversed()) {
                     val g_s = g + graph.exactDistance(n, s)
                     if (cache[s] != null) {
                         val (g_prime, _) = cache[s]!!

@@ -1,7 +1,5 @@
 package com.github.nanodeath
 
-import kotlin.math.abs
-import kotlin.math.cos
 import kotlin.math.sqrt
 
 class CostGrid(val width: Int, val height: Int) : Graph<CostGrid.CostNode> {
@@ -25,7 +23,7 @@ class CostGrid(val width: Int, val height: Int) : Graph<CostGrid.CostNode> {
         setAt(x, y, CostNode(x, y, costToEnter))
     }
 
-    override fun successorsOf(node: CostNode): Collection<CostNode> = listOfNotNull(
+    override fun successorsOf(node: CostNode): List<CostNode> = listOfNotNull(
         // left
         data.getOrNull(node.y)?.getOrNull(node.x - 1),
         // right
@@ -36,7 +34,7 @@ class CostGrid(val width: Int, val height: Int) : Graph<CostGrid.CostNode> {
         data.getOrNull(node.y + 1)?.getOrNull(node.x),
     )
 
-    override fun predecessorsOf(node: CostNode): Collection<CostNode> {
+    override fun predecessorsOf(node: CostNode): List<CostNode> {
         // In CostGrid every node connection is bidirectional
         return successorsOf(node)
     }
