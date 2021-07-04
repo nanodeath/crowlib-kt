@@ -20,7 +20,7 @@ class Grid(width: Int, height: Int) : Graph<Grid.SimpleNode> {
         data[y][x] = node
     }
 
-    class SimpleNode(internal val x: Int, internal val y: Int)
+    data class SimpleNode(internal val x: Int, internal val y: Int)
 
     override fun successorsOf(node: SimpleNode): Collection<SimpleNode> = listOfNotNull(
         // left
