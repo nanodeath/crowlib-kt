@@ -32,6 +32,7 @@ td > div {
 article.algo {
     display: none;
 }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"
           integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q=="
@@ -41,53 +42,81 @@ article.algo {
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-one-quarter">
+            <div class="column is-one-third">
                 <h2 class="title is-2">Configuration</h2>
                 <form>
-                    <div class="field">
-                        <label class="label">Algorithm
-                            <br/>
-                            <div class="select">
-                                <select id="algorithmSelect">
-                                    <option value="a_star">A*</option>
-                                    <option value="fra_star">FRA*</option>
-                                </select>
+                    <div class="card mb-1">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Graph Properties
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">X
+                                            <input id="dimensionsX" class="input" type="number" value="64">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">Y
+                                            <input id="dimensionsY" class="input" type="number" value="64">
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </label>
-                    </div>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">X
-                                    <input id="dimensionsX" class="input" type="number" value="64">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">Y
-                                    <input id="dimensionsY" class="input" type="number" value="64">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">
-                                    Display width
-                                    <input id="width" class="input" type="number" value="800">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">
-                                Display height <span title="Linked to display width">🔗</span>
-                                <input id="height" class="input" type="number" value="800" disabled>
-                            </label>
+                            <button id="generateGraph" class="button is-fullwidth">Generate Graph</button>
                         </div>
                     </div>
-                    <button id="generate" class="button is-fullwidth is-primary">Generate</button>
+                    <div class="card mb-1">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Display Properties
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">
+                                            Display width (pixels)
+                                            <input id="displayWidth" class="input" type="number" value="800">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <label class="label">
+                                        Display height <span title="Linked to display width">🔗</span>
+                                        <input id="displayHeight" class="input" type="number" value="800" disabled>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Algorithm Properties
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="field">
+                                <label class="label">Algorithm
+                                    <br/>
+                                    <div class="select">
+                                        <select id="algorithmSelect">
+                                            <option value="a_star">A*</option>
+                                            <option value="fra_star">FRA*</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                            <button id="findPath" class="button is-fullwidth is-primary">Find Path</button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="column">
