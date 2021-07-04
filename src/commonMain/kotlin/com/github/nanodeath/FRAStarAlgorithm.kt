@@ -1,11 +1,13 @@
 package com.github.nanodeath
 
+import kotlin.js.JsExport
 import kotlin.math.min
 
 /**
  * Fringe Search: https://en.wikipedia.org/wiki/Fringe_search
  * https://web.archive.org/web/20090219220415/http://www.cs.ualberta.ca/~games/pathfind/publications/cig2005.pdf
  */
+@JsExport
 class FRAStarAlgorithm<T>(private val graph: Graph<T>) {
     fun findPath(start: T, end: T): Path<T>? {
         val gMap = hashMapOf<T, Float>().apply {

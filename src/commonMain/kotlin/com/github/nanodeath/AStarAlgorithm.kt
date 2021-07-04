@@ -1,9 +1,14 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.github.nanodeath
+
+import kotlin.js.JsExport
 
 internal data class NodeWithScore<T>(val originalNode: T, val score: Float) : Comparable<NodeWithScore<T>> {
     override fun compareTo(other: NodeWithScore<T>): Int = score.compareTo(other.score)
 }
 
+@JsExport
 class AStarAlgorithm<T>(private val graph: Graph<T>) {
     private inline fun Map<T, Float>.g(node: T) = this.getOrElse(node) { Float.POSITIVE_INFINITY }
     private inline fun Map<T, Float>.g(node: NodeWithScore<T>) = g(node.originalNode)

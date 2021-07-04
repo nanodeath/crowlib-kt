@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+
 plugins {
     kotlin("multiplatform") version "1.5.20"
 }
@@ -23,7 +25,11 @@ kotlin {
             useJUnitPlatform()
         }
     }
-    js(BOTH) {
+    js(IR) {
+        binaries.executable()
+        compilations.all {
+            compileKotlinTask.kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
+        }
         browser {
             commonWebpackConfig {
 //                cssSupport.enabled = true
@@ -67,4 +73,8 @@ kotlin {
 //        val nativeMain by getting
 //        val nativeTest by getting
     }
+}
+
+tasks.named<KotlinJsCompile>("compileKotlinJs").configure {
+    kotlinOptions.moduleKind = "plain"
 }

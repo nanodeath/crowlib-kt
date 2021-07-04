@@ -1,8 +1,10 @@
 package com.github.nanodeath
 
+import kotlin.js.JsExport
 import kotlin.math.abs
 import kotlin.math.sqrt
 
+@JsExport
 class Grid(width: Int, height: Int) : Graph<Grid.SimpleNode> {
     private val data: Array<Array<SimpleNode?>> = Array(height) { y -> Array(width) { x -> SimpleNode(x, y) } }
 

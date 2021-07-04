@@ -1,3 +1,8 @@
 package com.github.nanodeath
 
-data class Path<T>(val nodes: List<T>, val totalDistance: Float)
+import kotlin.js.JsExport
+
+@JsExport
+data class Path<T>(val nodes: List<T>, val totalDistance: Float) {
+    val jsPath = constructQueue<T>().also { q -> nodes.forEach { q.enqueue(it) } }
+}

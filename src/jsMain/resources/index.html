@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello, Kotlin/JS!</title>
+    <style>
+table#grid {
+  width: 300px;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+td {
+  width: 33.33%;
+  position: relative;
+  border: 1px solid gray;
+}
+td:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+td > div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+}
+
+article.algo {
+    display: none;
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"
+          integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-quarter">
+                <h2 class="title is-2">Configuration</h2>
+                <form>
+                    <div class="field">
+                        <label class="label">Algorithm
+                            <br/>
+                            <div class="select">
+                                <select id="algorithmSelect">
+                                    <option value="a_star">A*</option>
+                                    <option value="fra_star">FRA*</option>
+                                </select>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">X
+                                    <input id="dimensionsX" class="input" type="number" value="64">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Y
+                                    <input id="dimensionsY" class="input" type="number" value="64">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">
+                                    Display width
+                                    <input id="width" class="input" type="number" value="800">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">
+                                Display height <span title="Linked to display width">🔗</span>
+                                <input id="height" class="input" type="number" value="800" disabled>
+                            </label>
+                        </div>
+                    </div>
+                    <button id="generate" class="button is-fullwidth is-primary">Generate</button>
+                </form>
+            </div>
+            <div class="column">
+                <article class="algo a_star">
+                    <h1 class="title is-1">A*</h1>
+                    <p>
+                        The A* algorithm is probably the most popular, reasonably efficient, reasonably simple algorithm
+                        in common usage. It analyzes nodes in a straight shot between the start and goal, and if there
+                        are obstructions, evaluates nodes that deviate from that straight shot the least first.
+                    </p>
+                </article>
+                <article class="algo fra_star">
+                    <h1 class="title is-1">FRA*</h1>
+                </article>
+            </div>
+        </div>
+        <table id="grid">
+        </table>
+    </div>
+</section>
+<script src="crowlib-kt.js"></script>
+</body>
+</html>
