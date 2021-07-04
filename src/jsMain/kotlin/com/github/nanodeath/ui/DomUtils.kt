@@ -4,8 +4,6 @@ package com.github.nanodeath.ui
 
 import org.w3c.dom.*
 
-
-//internal inline fun Document.byId(el: String): HTMLElement? = getElementById(el).unsafeCast<HTMLElement?>()
 internal inline fun <T : Element> Document.byId(el: String): T {
     return getElementById(el).unsafeCast<T>()
 }
