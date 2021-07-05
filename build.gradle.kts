@@ -1,7 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+import org.sonarqube.gradle.SonarQubeExtension
 
 plugins {
     kotlin("multiplatform") version "1.5.20"
+    id("org.sonarqube") version "3.3"
 }
 
 group = "com.github.nanodeath"
@@ -72,6 +74,14 @@ kotlin {
         val jsTest by getting
 //        val nativeMain by getting
 //        val nativeTest by getting
+    }
+}
+
+configure<SonarQubeExtension> {
+    properties {
+        property("sonar.projectKey", "nanodeath_crowlib-kt")
+        property("sonar.organization", "nanodeath")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
 
