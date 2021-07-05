@@ -4,6 +4,7 @@ import org.sonarqube.gradle.SonarQubeExtension
 plugins {
     kotlin("multiplatform") version "1.5.20"
     id("org.sonarqube") version "3.3"
+    jacoco
 }
 
 group = "com.github.nanodeath"
@@ -82,9 +83,27 @@ configure<SonarQubeExtension> {
         property("sonar.projectKey", "nanodeath_crowlib-kt")
         property("sonar.organization", "nanodeath")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 }
 
 tasks.named<KotlinJsCompile>("compileKotlinJs").configure {
     kotlinOptions.moduleKind = "plain"
+}
+
+tasks.named("jvmTest").configure {
+    finalizedBy("jacocoTestReport")
+}
+
+// https://github.com/vanniktech/gradle-android-junit-jacoco-plugin/issues/140#issuecomment-704672510
+tasks.create<JacocoReport>("jacocoTestReport") {
+    dependsOn("jvmTest")
+    group = "verification"
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+    classDirectories.setFrom(file("${buildDir}/classes/kotlin/jvm/main"))
+    sourceDirectories.setFrom(files("src/commonMain", "src/jvmMain"))
+    executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
 }
